@@ -21,15 +21,13 @@ public class EmployeeManager {
 
     }
 
-    private EmployeeRecords getEmployees(){
+    private EmployeeRecords getEmployees() {
         String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/employee_records.csv";
         CSVReader reader = new CSVReader();
         reader.readToEmployeesMap(filepath);
 
-
         return reader.getEmployees();
     }
-
 
 
     public void insertWithThreads() {
