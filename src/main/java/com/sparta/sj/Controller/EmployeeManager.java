@@ -11,18 +11,17 @@ public class EmployeeManager {
 
     private Thread thread1;
     private Thread thread2;
-    private EmployeeRecords employeeRecords;
 
     public void sendToDataBase(){
         EmployeeRecords employeeRecords = getEmployees();
-        DAO dao = new DAO();
+        DAO dao = new DAO(employeeRecords);
 
-        dao.EmployeeInsert(employeeRecords);
+        dao.insertEmployeesToDatabase();
 
     }
 
     private EmployeeRecords getEmployees() {
-        String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/employee_records.csv";
+        String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/EmployeeRecordsLarge.csv";
         CSVReader reader = new CSVReader();
         reader.readToEmployeesMap(filepath);
 
@@ -32,19 +31,25 @@ public class EmployeeManager {
 
     public void insertWithThreads() {
         EmployeeRecords employeeRecords = getEmployees();
-        DAO d = new DAO();
-        d.setThreads(employeeRecords);
+        DAO d = new DAO(employeeRecords);
+
         Runnable run1 = new Runnable() {
             @Override
             public void run() {
-                d.first();
+                try {
+                    d.first();
+                }catch(Exception e){}
+
             }
         };
 
         Runnable run2 = new Runnable() {
             @Override
             public void run() {
-                d.second();
+                try{
+                    d.second();
+                }catch(Exception e){}
+
             }
         };
 
