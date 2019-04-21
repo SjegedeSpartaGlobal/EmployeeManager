@@ -14,14 +14,22 @@ public class DAO{
     private Collection<Employee> employees;
     private List<Employee> employeeList;
     private EmployeeRecords records;
+    private Connection connection;
     private int emp_length;
     private int mid;
 
     public DAO( EmployeeRecords records){
-        this.records = records;
-        this.employeeList = new ArrayList<>(this.records.getEmployees());
-        this.emp_length = this.employeeList.size();
-        this.mid = getMid();
+        try {
+            Timer.setStart(System.nanoTime());
+            this.records = records;
+            this.employeeList = new ArrayList<>(this.records.getEmployees());
+            this.emp_length = this.employeeList.size();
+            this.mid = getMid();
+            this.connection = DriverManager.getConnection(this.MY_SQL + TimeZone.getDefault().getID());
+            this.connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void insertEmployeesToDatabase() {
@@ -46,6 +54,9 @@ public class DAO{
         for (int i = start; i < end; i++) {
             addEmployee(employeeList.get(i));
         }
+
+        closeConnection();
+        Timer.setEnd(System.nanoTime());
     }
 
     private int getMid(){
@@ -59,9 +70,7 @@ public class DAO{
     }
 
     private void addEmployee(Employee employee) {
-        Connection connection = null;
         try {
-            connection = DriverManager.getConnection(MY_SQL + TimeZone.getDefault().getID());
             PreparedStatement statement = connection.prepareStatement(addEmployees);
             statement.setString(1, employee.getEmp_id());
             statement.setString(2, employee.getName_prefix());
@@ -79,14 +88,19 @@ public class DAO{
             e.printStackTrace();
         }  catch (NullPointerException e) {
             e.printStackTrace();
-        }finally{
-            if(connection!=null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+    }
+
+    private void closeConnection(){
+        try {
+            this.connection.commit();
+            this.connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getRunTime(){
+
     }
 }

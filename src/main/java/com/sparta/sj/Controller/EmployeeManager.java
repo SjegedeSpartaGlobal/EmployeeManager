@@ -66,5 +66,9 @@ public class EmployeeManager {
         }
         return false;
     }
+
+    public void getRunTime(){
+
+    }
 }
 
