@@ -17,16 +17,34 @@ public class DAO{
     private Connection connection;
     private int emp_length;
     private int mid;
+    private int rem;
+    private int partition;
+    private int firstPart;
+    private int secPart;
+    private int thirdPart;
+    private int fourthPart;
+    private int fifthPart;
+    private boolean firstDone;
+    private boolean secDone;
+    private boolean thirdDone;
+    private boolean fourthDone;
+    private boolean fifthDone;
+
 
     public DAO( EmployeeRecords records){
         try {
             Timer.setStart(System.nanoTime());
             this.records = records;
             this.employeeList = new ArrayList<>(this.records.getEmployees());
-            this.emp_length = this.employeeList.size();
-            this.mid = getMid();
-            this.connection = DriverManager.getConnection(this.MY_SQL + TimeZone.getDefault().getID());
-            this.connection.setAutoCommit(false);
+            emp_length = employeeList.size();
+            connection = DriverManager.getConnection(MY_SQL + TimeZone.getDefault().getID());
+            connection.setAutoCommit(false);
+            setPartition();
+            firstPart = rem + partition;
+            secPart = firstPart + partition;
+            thirdPart = secPart + partition;
+            fourthPart = thirdPart + partition;
+            fifthPart = fourthPart + partition;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,6 +76,46 @@ public class DAO{
         closeConnection();
     }
 
+    public synchronized void firstOfFive(){
+        for (int i = 0; i < firstPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        firstDone = true;
+    }
+
+    public synchronized void secOfFive(){
+        for (int i = firstPart; i < secPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        secDone = true;
+    }
+
+    public synchronized void thirdOfFive(){
+        for (int i = secPart; i < thirdPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        thirdDone = true;
+    }
+
+    public synchronized void fourthOfFive(){
+        for (int i = thirdPart; i < fourthPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        fourthDone = true;
+    }
+
+    public synchronized void fifthOfFive(){
+        for (int i = fourthPart; i < fifthPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        fifthDone = true;
+    }
+
     private int getMid(){
         int mid = 0;
         if(emp_length%2!=0){
@@ -67,6 +125,19 @@ public class DAO{
         }
         return mid;
     }
+
+    private void setRem(){
+        rem = emp_length%5;
+
+    }
+
+    private void setPartition(){
+        setRem();
+        int newLength = emp_length - rem;
+        partition = emp_length/5;
+    }
+
+
 
     private void addEmployee(Employee employee) {
         try {
@@ -90,10 +161,12 @@ public class DAO{
         }
     }
 
-    private void closeConnection(){
+    public void closeConnection(){
         try {
-            this.connection.commit();
-            this.connection.close();
+            if(firstDone&&secDone&&thirdDone&&fourthDone&&fifthDone) {
+                this.connection.commit();
+                this.connection.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

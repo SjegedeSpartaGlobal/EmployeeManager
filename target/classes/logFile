@@ -1,3 +1,6 @@
 05-04-2019 13:24:00 TRACE [main] Starter - runtime with threads: 1.476830400
 21-04-2019 18:31:55 INFO [main] Starter - -201912321663939
 21-04-2019 19:38:29 INFO [main] EmployeeManager - Hello!!!
+21-04-2019 19:40:01 INFO [main] EmployeeManager - runtime: 4919503119
+21-04-2019 20:25:22 INFO [main] EmployeeManager - runtime: 7062863091
+21-04-2019 20:26:12 INFO [main] EmployeeManager - runtime: 6768857719

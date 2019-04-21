@@ -62,21 +62,6 @@ public class EmployeeManager {
                 }
             };
 
-//            Runnable run3 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    synchronized (this) {
-//                        try {
-//                            Timer.setEnd(System.nanoTime());
-//                            logger.info("Hello!!!");
-//                            System.out.println("Hello!!");
-////                        logger.info("runtime: "+Timer.getRuntime());
-//
-//                        } catch (Exception e) {
-//                        }
-//                    }
-//                }
-//            };
 
             ExecutorService es = Executors.newCachedThreadPool();
             es.execute(run1);
@@ -86,6 +71,82 @@ public class EmployeeManager {
             if(finished){
                 Timer.setEnd(System.nanoTime());
                 logger.info("runtime: "+Timer.getRuntime());
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertWithFiveThreads() {
+        try {
+            EmployeeRecords employeeRecords = getEmployees();
+            DAO d = new DAO(employeeRecords);
+
+            Runnable run1 = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        d.firstOfFive();
+                    }catch(Exception e){}
+
+                }
+            };
+
+            Runnable run2 = new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        d.secOfFive();
+                    }catch(Exception e){}
+
+                }
+            };
+
+            Runnable run3 = new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        d.thirdOfFive();
+                    }catch(Exception e){}
+
+                }
+            };
+
+            Runnable run4 = new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        d.fourthOfFive();
+                    }catch(Exception e){}
+
+                }
+            };
+
+            Runnable run5 = new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        d.fifthOfFive();
+                    }catch(Exception e){}
+
+                }
+            };
+
+
+            ExecutorService es = Executors.newCachedThreadPool();
+            es.execute(run1);
+            es.execute(run2);
+            es.execute(run3);
+            es.execute(run4);
+            es.execute(run5);
+            es.shutdown();
+            boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
+            if(finished){
+                d.closeConnection();
+                Timer.setEnd(System.nanoTime());
+                logger.info("Runtime: "+Timer.getRuntime());
             }
 
 

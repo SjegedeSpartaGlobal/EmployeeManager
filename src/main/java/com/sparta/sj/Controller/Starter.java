@@ -18,9 +18,7 @@ public class Starter {
 
     public static void main(String[] args) {
         EmployeeManager em_t = new EmployeeManager();
-        em_t.insertWithThreads();
-
-
+        em_t.insertWithFiveThreads();
     }
 }
 
