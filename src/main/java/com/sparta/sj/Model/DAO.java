@@ -56,7 +56,6 @@ public class DAO{
         }
 
         closeConnection();
-        Timer.setEnd(System.nanoTime());
     }
 
     private int getMid(){
@@ -100,7 +99,4 @@ public class DAO{
         }
     }
 
-    public void getRunTime(){
-
-    }
 }
