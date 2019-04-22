@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class EmployeeManager {
 
-    private static Logger logger = Logger.getLogger(EmployeeManager.class);
+    private Logger logger = Logger.getLogger(EmployeeManager.class);
 
     //abstractly sending CSV to Database
     public void sendCSVToDatabase(){
