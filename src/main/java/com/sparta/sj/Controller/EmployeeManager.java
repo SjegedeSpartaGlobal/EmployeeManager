@@ -13,23 +13,27 @@ import java.util.concurrent.TimeUnit;
 
 public class EmployeeManager {
 
-
     private Thread thread1;
     private Thread thread2;
     private Thread thread3;
     private Thread thread4;
     private static Logger logger = Logger.getLogger(EmployeeManager.class);
 
-    public void sendToDataBase(){
-        EmployeeRecords employeeRecords = getEmployees();
-        DAO dao = new DAO(employeeRecords);
-
-        dao.insertEmployeesToDatabase();
-
+    public void sendCSVToDatabase(){
+        insertWithFiveThreads();
     }
 
+    private void insertWithoutThreads(){
+        EmployeeRecords employeeRecords = getEmployees();
+        DAO dao = new DAO(employeeRecords);
+        dao.insertEmployeesToDatabase();
+        dao.closeConnection();
+    }
+
+
+
     private EmployeeRecords getEmployees() {
-        String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/employee_records.csv";
+        String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/EmployeeRecordsLarge.csv";
         CSVReader reader = new CSVReader();
         reader.readToEmployeesMap(filepath);
 
@@ -37,8 +41,9 @@ public class EmployeeManager {
     }
 
 
-    public void insertWithThreads() {
+    private void insertWithTwoThreads() {
         try {
+            boolean finished;
             EmployeeRecords employeeRecords = getEmployees();
             DAO d = new DAO(employeeRecords);
 
@@ -62,25 +67,25 @@ public class EmployeeManager {
                 }
             };
 
-
             ExecutorService es = Executors.newCachedThreadPool();
             es.execute(run1);
             es.execute(run2);
             es.shutdown();
-            boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
+
+            finished = es.awaitTermination(1, TimeUnit.MINUTES);
             if(finished){
+                d.closeConnection();
                 Timer.setEnd(System.nanoTime());
-                logger.info("runtime: "+Timer.getRuntime());
+                logger.info("Runtime: "+Timer.getRuntime());
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void insertWithFiveThreads() {
+    private void insertWithFiveThreads() {
         try {
+            boolean finished;
             EmployeeRecords employeeRecords = getEmployees();
             DAO d = new DAO(employeeRecords);
 
@@ -142,14 +147,13 @@ public class EmployeeManager {
             es.execute(run4);
             es.execute(run5);
             es.shutdown();
-            boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
+
+            finished = es.awaitTermination(1, TimeUnit.MINUTES);
             if(finished){
                 d.closeConnection();
                 Timer.setEnd(System.nanoTime());
                 logger.info("Runtime: "+Timer.getRuntime());
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

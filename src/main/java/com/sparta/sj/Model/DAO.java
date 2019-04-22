@@ -39,6 +39,7 @@ public class DAO{
             emp_length = employeeList.size();
             connection = DriverManager.getConnection(MY_SQL + TimeZone.getDefault().getID());
             connection.setAutoCommit(false);
+            mid = getMid();
             setPartition();
             firstPart = rem + partition;
             secPart = firstPart + partition;
@@ -73,7 +74,6 @@ public class DAO{
             addEmployee(employeeList.get(i));
         }
 
-        closeConnection();
     }
 
     public synchronized void firstOfFive(){

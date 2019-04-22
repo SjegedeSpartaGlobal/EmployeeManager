@@ -17,8 +17,8 @@ public class Starter {
     private static Logger logger = Logger.getLogger(Starter.class);
 
     public static void main(String[] args) {
-        EmployeeManager em_t = new EmployeeManager();
-        em_t.insertWithFiveThreads();
+        EmployeeManager em = new EmployeeManager();
+        em.sendCSVToDatabase();
     }
 }
 
