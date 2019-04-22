@@ -29,8 +29,11 @@ public class DAO{
     private boolean thirdDone;
     private boolean fourthDone;
     private boolean fifthDone;
+    private boolean firstFin;
+    private boolean secFin;
+    private boolean finished;
 
-
+    //Initialises all the variables needed to perform migration using a transaction and different levels of threading
     public DAO( EmployeeRecords records){
         try {
             Timer.setStart(System.nanoTime());
@@ -41,6 +44,7 @@ public class DAO{
             connection.setAutoCommit(false);
             mid = getMid();
             setPartition();
+            //Ranges needed for five threads
             firstPart = rem + partition;
             secPart = firstPart + partition;
             thirdPart = secPart + partition;
@@ -51,21 +55,28 @@ public class DAO{
         }
     }
 
+    //Implementation without threads
     public void insertEmployeesToDatabase() {
         this.employees = records.getEmployees();
         for (Employee employee: employees) {
             addEmployee(employee);
         }
+
+        finished = true;
     }
 
+    //first thread in 2 threaded implementation
     public synchronized void first(){
         int end = mid;
 
         for (int i = 0; i < end; i++) {
             addEmployee(employeeList.get(i));
         }
+
+        firstFin = true;
     }
 
+    //second thread in 2 threaded implementation
     public synchronized void second(){
         int start = mid;
         int end = emp_length;
@@ -74,46 +85,7 @@ public class DAO{
             addEmployee(employeeList.get(i));
         }
 
-    }
-
-    public synchronized void firstOfFive(){
-        for (int i = 0; i < firstPart; i++) {
-            addEmployee(employeeList.get(i));
-        }
-
-        firstDone = true;
-    }
-
-    public synchronized void secOfFive(){
-        for (int i = firstPart; i < secPart; i++) {
-            addEmployee(employeeList.get(i));
-        }
-
-        secDone = true;
-    }
-
-    public synchronized void thirdOfFive(){
-        for (int i = secPart; i < thirdPart; i++) {
-            addEmployee(employeeList.get(i));
-        }
-
-        thirdDone = true;
-    }
-
-    public synchronized void fourthOfFive(){
-        for (int i = thirdPart; i < fourthPart; i++) {
-            addEmployee(employeeList.get(i));
-        }
-
-        fourthDone = true;
-    }
-
-    public synchronized void fifthOfFive(){
-        for (int i = fourthPart; i < fifthPart; i++) {
-            addEmployee(employeeList.get(i));
-        }
-
-        fifthDone = true;
+        secFin = true;
     }
 
     private int getMid(){
@@ -124,6 +96,51 @@ public class DAO{
             mid = emp_length/2;
         }
         return mid;
+    }
+
+    //first thread 5 threaded implementation
+    public synchronized void firstOfFive(){
+        for (int i = 0; i < firstPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        firstDone = true;
+    }
+
+    //second thread 5 threaded implementation
+    public synchronized void secOfFive(){
+        for (int i = firstPart; i < secPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        secDone = true;
+    }
+
+    //third thread 5 threaded implementation
+    public synchronized void thirdOfFive(){
+        for (int i = secPart; i < thirdPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        thirdDone = true;
+    }
+
+    //fourth thread 5 threaded implementation
+    public synchronized void fourthOfFive(){
+        for (int i = thirdPart; i < fourthPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        fourthDone = true;
+    }
+
+    //fifth thread 5 threaded implementation
+    public synchronized void fifthOfFive(){
+        for (int i = fourthPart; i < fifthPart; i++) {
+            addEmployee(employeeList.get(i));
+        }
+
+        fifthDone = true;
     }
 
     private void setRem(){
@@ -161,9 +178,31 @@ public class DAO{
         }
     }
 
-    public void closeConnection(){
+    public void closeConnectionFiveThreaded(){
         try {
             if(firstDone&&secDone&&thirdDone&&fourthDone&&fifthDone) {
+                this.connection.commit();
+                this.connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeConnectionTwoThreaded(){
+        try {
+            if(firstFin&&secFin) {
+                this.connection.commit();
+                this.connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeConnection(){
+        try {
+            if(finished) {
                 this.connection.commit();
                 this.connection.close();
             }

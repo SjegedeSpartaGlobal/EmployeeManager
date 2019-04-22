@@ -1,13 +1,11 @@
 package com.sparta.sj.Model;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 public class EmployeeRecords {
-    private Map<String, Employee> employeeMap = new HashMap<>();
-    private int counter = 0;
+    private Map<String, Employee> employeeMap;
     private Iterator it = employeeMap.entrySet().iterator();
 
     public EmployeeRecords(Map<String, Employee> employeeMap) {

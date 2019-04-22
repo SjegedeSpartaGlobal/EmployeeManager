@@ -13,15 +13,13 @@ import java.util.concurrent.TimeUnit;
 
 public class EmployeeManager {
 
-    private Thread thread1;
-    private Thread thread2;
-    private Thread thread3;
-    private Thread thread4;
     private static Logger logger = Logger.getLogger(EmployeeManager.class);
 
+    //abstractly sending CSV to Database
     public void sendCSVToDatabase(){
         insertWithFiveThreads();
     }
+
 
     private void insertWithoutThreads(){
         EmployeeRecords employeeRecords = getEmployees();
@@ -32,10 +30,11 @@ public class EmployeeManager {
 
 
 
+    //Gets employees from CSV file validates, verifies and creates records object to send to database
     private EmployeeRecords getEmployees() {
         String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/EmployeeRecordsLarge.csv";
         CSVReader reader = new CSVReader();
-        reader.readToEmployeesMap(filepath);
+        reader.readToEmployeesRecords(filepath);
 
         return reader.getEmployees();
     }
@@ -74,7 +73,7 @@ public class EmployeeManager {
 
             finished = es.awaitTermination(1, TimeUnit.MINUTES);
             if(finished){
-                d.closeConnection();
+                d.closeConnectionTwoThreaded();
                 Timer.setEnd(System.nanoTime());
                 logger.info("Runtime: "+Timer.getRuntime());
             }
@@ -150,7 +149,7 @@ public class EmployeeManager {
 
             finished = es.awaitTermination(1, TimeUnit.MINUTES);
             if(finished){
-                d.closeConnection();
+                d.closeConnectionFiveThreaded();
                 Timer.setEnd(System.nanoTime());
                 logger.info("Runtime: "+Timer.getRuntime());
             }

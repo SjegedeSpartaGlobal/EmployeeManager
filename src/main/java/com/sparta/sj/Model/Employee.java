@@ -2,9 +2,6 @@ package com.sparta.sj.Model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.DateTimeParseException;
-import java.util.Date;
 
 public class Employee {
 
@@ -18,31 +15,20 @@ public class Employee {
     private double salary;
     private LocalDate date_of_birth;
     private LocalDate date_of_joining;
-    private boolean is_duplicate;
-//    private DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendOptional(DateTimeFormatter.ofPattern("d/MM/yyyy"))
-//                                                                        .appendOptional(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-//                                                                        .appendOptional(DateTimeFormatter.ofPattern("d/M/yyyy"))
-//                                                                        .appendOptional(DateTimeFormatter.ofPattern("dd/M/yyyy"))
-//                                                                        .toFormatter();
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
-    public Employee(String[] values){
-//        try {
-            this.emp_id = values[0];
-            this.name_prefix = values[1];
-            this.first_name = values[2];
-            this.middle_initial = values[3];
-            this.last_name = values[4];
-            this.gender = values[5];
-            this.email = values[6];
-            this.date_of_birth = LocalDate.parse(values[7], formatter);
-            this.date_of_joining = LocalDate.parse(values[8], formatter);
-            this.salary = Double.parseDouble(values[9]);
-
-//        }catch(DateTimeParseException e){
-
-//        }
+    public Employee(String[] values) {
+        this.emp_id = values[0];
+        this.name_prefix = values[1];
+        this.first_name = values[2];
+        this.middle_initial = values[3];
+        this.last_name = values[4];
+        this.gender = values[5];
+        this.email = values[6];
+        this.date_of_birth = LocalDate.parse(values[7], formatter);
+        this.date_of_joining = LocalDate.parse(values[8], formatter);
+        this.salary = Double.parseDouble(values[9]);
     }
 
     public String getEmp_id() {
@@ -85,11 +71,4 @@ public class Employee {
         return date_of_joining;
     }
 
-    public boolean isIs_duplicate() {
-        return is_duplicate;
-    }
-
-    public void setIs_duplicate(boolean is_duplicate) {
-        this.is_duplicate = is_duplicate;
-    }
 }

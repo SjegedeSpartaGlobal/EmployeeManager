@@ -15,7 +15,7 @@ public class CSVReader {
     private EmployeeRecords employeeDups;
     private EmployeeRecords employeeUnVal;
 
-    public void readToEmployeesMap(String filepath){
+    public void readToEmployeesRecords(String filepath){
         String line;
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))){
             reader.readLine();
@@ -32,11 +32,13 @@ public class CSVReader {
         return employees;
     }
 
+    //returns records with duplicates
     public EmployeeRecords getEmployeeDups() {
         employeeDups = new EmployeeRecords(employeeDupMap);
         return employeeDups;
     }
 
+    //returns records that have not passed the validation
     public EmployeeRecords getUnvalidated() {
         employeeUnVal = new EmployeeRecords(unvalidatedEMap);
         return employeeUnVal;
@@ -47,6 +49,7 @@ public class CSVReader {
         return employee;
     }
 
+    //puts only validated and verified records in employee records
     private void readEmployeeHelper(String[] values){
         Employee nextEmployee = createEmployee(values);
         Validator validator = new Validator();
@@ -62,6 +65,7 @@ public class CSVReader {
     }
 
     private void addToDuplicate(String ID, Employee nextEmployee){
+
         employeeDupMap.put(ID, nextEmployee);
     }
 

@@ -1,5 +1,6 @@
 package com.sparta.sj.Model;
 
+//Single use timer to time entire process using static variables
 public class Timer {
     private static long start;
     private static long end;
