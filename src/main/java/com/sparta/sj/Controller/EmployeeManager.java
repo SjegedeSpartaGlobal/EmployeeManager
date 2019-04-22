@@ -16,12 +16,12 @@ public class EmployeeManager {
     private Logger logger = Logger.getLogger(EmployeeManager.class);
 
     //abstractly sending CSV to Database
-    public void sendCSVToDatabase(){
+    public void sendCSVToDatabase() {
         insertWithFiveThreads();
     }
 
 
-    private void insertWithoutThreads(){
+    private void insertWithoutThreads() {
         EmployeeRecords employeeRecords = getEmployees();
         DAO dao = new DAO(employeeRecords);
         dao.insertEmployeesToDatabase();
@@ -29,13 +29,10 @@ public class EmployeeManager {
     }
 
 
-
     //Gets employees from CSV file validates, verifies and creates records object to send to database
     private EmployeeRecords getEmployees() {
         String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/EmployeeRecordsLarge.csv";
-        CSVReader reader = new CSVReader();
-        reader.readToEmployeesRecords(filepath);
-
+        CSVReader reader = new CSVReader(filepath);
         return reader.getEmployees();
     }
 
@@ -51,7 +48,8 @@ public class EmployeeManager {
                 public void run() {
                     try {
                         d.first();
-                    }catch(Exception e){}
+                    } catch (Exception e) {
+                    }
 
                 }
             };
@@ -59,9 +57,10 @@ public class EmployeeManager {
             Runnable run2 = new Runnable() {
                 @Override
                 public void run() {
-                    try{
+                    try {
                         d.second();
-                    }catch(Exception e){}
+                    } catch (Exception e) {
+                    }
 
                 }
             };
@@ -72,10 +71,10 @@ public class EmployeeManager {
             es.shutdown();
 
             finished = es.awaitTermination(1, TimeUnit.MINUTES);
-            if(finished){
+            if (finished) {
                 d.closeConnectionTwoThreaded();
                 Timer.setEnd(System.nanoTime());
-                logger.info("Runtime: "+Timer.getRuntime());
+                logger.info("Runtime: " + Timer.getRuntime());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +92,8 @@ public class EmployeeManager {
                 public void run() {
                     try {
                         d.firstOfFive();
-                    }catch(Exception e){}
+                    } catch (Exception e) {
+                    }
 
                 }
             };
@@ -101,9 +101,10 @@ public class EmployeeManager {
             Runnable run2 = new Runnable() {
                 @Override
                 public void run() {
-                    try{
+                    try {
                         d.secOfFive();
-                    }catch(Exception e){}
+                    } catch (Exception e) {
+                    }
 
                 }
             };
@@ -111,9 +112,10 @@ public class EmployeeManager {
             Runnable run3 = new Runnable() {
                 @Override
                 public void run() {
-                    try{
+                    try {
                         d.thirdOfFive();
-                    }catch(Exception e){}
+                    } catch (Exception e) {
+                    }
 
                 }
             };
@@ -121,9 +123,10 @@ public class EmployeeManager {
             Runnable run4 = new Runnable() {
                 @Override
                 public void run() {
-                    try{
+                    try {
                         d.fourthOfFive();
-                    }catch(Exception e){}
+                    } catch (Exception e) {
+                    }
 
                 }
             };
@@ -131,9 +134,10 @@ public class EmployeeManager {
             Runnable run5 = new Runnable() {
                 @Override
                 public void run() {
-                    try{
+                    try {
                         d.fifthOfFive();
-                    }catch(Exception e){}
+                    } catch (Exception e) {
+                    }
 
                 }
             };
@@ -148,10 +152,10 @@ public class EmployeeManager {
             es.shutdown();
 
             finished = es.awaitTermination(1, TimeUnit.MINUTES);
-            if(finished){
+            if (finished) {
                 d.closeConnectionFiveThreaded();
                 Timer.setEnd(System.nanoTime());
-                logger.info("Runtime: "+Timer.getRuntime());
+                logger.info("Runtime: " + Timer.getRuntime());
             }
         } catch (Exception e) {
             e.printStackTrace();

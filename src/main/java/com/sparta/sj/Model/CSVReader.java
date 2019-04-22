@@ -1,5 +1,7 @@
 package com.sparta.sj.Model;
 
+import org.apache.log4j.Logger;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,8 +16,9 @@ public class CSVReader {
     private EmployeeRecords employees;
     private EmployeeRecords employeeDups;
     private EmployeeRecords employeeUnVal;
+    private Logger logger = Logger.getLogger(CSVReader.class);
 
-    public void readToEmployeesRecords(String filepath){
+    public CSVReader(String filepath){
         String line;
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))){
             reader.readLine();

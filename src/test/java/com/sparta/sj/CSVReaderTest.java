@@ -16,9 +16,8 @@ public class CSVReaderTest {
 
     @Test
     public void testReadToEmployeesList(){
-        CSVReader reader = new CSVReader();
         String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/test.csv";
-        reader.readToEmployeesRecords(filepath);
+        CSVReader reader = new CSVReader(filepath);
         EmployeeRecords employee_map = reader.getEmployees();
         int size = employee_map.getEmployeeMap().size();
         Assert.assertEquals(13,size);
@@ -26,9 +25,8 @@ public class CSVReaderTest {
 
     @Test
     public void testGetEmployeeDupMap(){
-        CSVReader reader = new CSVReader();
         String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/duplicate_test.csv";
-        reader.readToEmployeesRecords(filepath);
+        CSVReader reader = new CSVReader(filepath);
         EmployeeRecords employee_dups = reader.getEmployeeDups();
         int size = employee_dups.getEmployeeMap().size();
 
@@ -37,9 +35,8 @@ public class CSVReaderTest {
 
     @Test
     public void testGetUnvalidatedEMap(){
-        CSVReader reader = new CSVReader();
         String filepath = "C:/Users/SJegede/IdeaProjects/EmployeeManager/resources/validator_test.csv";
-        reader.readToEmployeesRecords(filepath);
+        CSVReader reader = new CSVReader(filepath);
         EmployeeRecords employeeUnV = reader.getUnvalidated();
         int size = employeeUnV.getEmployeeMap().size();
 

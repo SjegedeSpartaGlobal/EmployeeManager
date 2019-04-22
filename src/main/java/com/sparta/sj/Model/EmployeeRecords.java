@@ -6,10 +6,11 @@ import java.util.Map;
 
 public class EmployeeRecords {
     private Map<String, Employee> employeeMap;
-    private Iterator it = employeeMap.entrySet().iterator();
+    private Iterator it;
 
     public EmployeeRecords(Map<String, Employee> employeeMap) {
         this.employeeMap = employeeMap;
+        it = employeeMap.entrySet().iterator();
     }
 
     public Map<String, Employee> getEmployeeMap() {

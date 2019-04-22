@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 
 public class DAO{
     private String addEmployees = "INSERT INTO employees values (?,?,?,?,?,?,?,?,?,?)";
-    private final String MY_SQL = "jdbc:mysql://localhost:3306/employees?user=root&password=1992Megamind&useSSL=false&serverTimezone=";
+    private final String MY_SQL = "jdbc:mysql://localhost:3306/employees?user=root&password=dude&useSSL=false&serverTimezone=";
     private Collection<Employee> employees;
     private List<Employee> employeeList;
     private EmployeeRecords records;
