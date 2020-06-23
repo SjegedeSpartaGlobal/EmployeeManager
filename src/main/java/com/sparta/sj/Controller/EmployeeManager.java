@@ -20,7 +20,7 @@ public class EmployeeManager {
         insertWithFiveThreads();
     }
 
-
+    // sends data to the database without threads
     private void insertWithoutThreads() {
         EmployeeRecords employeeRecords = getEmployees();
         DAO dao = new DAO(employeeRecords);
@@ -36,7 +36,7 @@ public class EmployeeManager {
         return reader.getEmployees();
     }
 
-
+    // runs 2 threads simultaneously to send data to the database
     private void insertWithTwoThreads() {
         try {
             boolean finished;
@@ -81,6 +81,7 @@ public class EmployeeManager {
         }
     }
 
+    // runs 5 threads simultaneaously to send to the database
     private void insertWithFiveThreads() {
         try {
             boolean finished;

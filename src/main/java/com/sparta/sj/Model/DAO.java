@@ -88,6 +88,7 @@ public class DAO{
         secFin = true;
     }
 
+    // sets the mid so the data can be split into 2 threads
     private int getMid(){
         int mid = 0;
         if(emp_length%2!=0){
@@ -143,19 +144,21 @@ public class DAO{
         fifthDone = true;
     }
 
+    // gets the remainder from divided by 5 to add to the first so it's easily to 
+    // split the data into 5 threads
     private void setRem(){
-        rem = emp_length%5;
+        rem = emp_length % 5;
 
     }
 
+    // sets the size for the five equal partitions for the five threads
     private void setPartition(){
         setRem();
         int newLength = emp_length - rem;
-        partition = emp_length/5;
+        partition = emp_length / 5;
     }
 
-
-
+    // an employee row using the prepared statement
     private void addEmployee(Employee employee) {
         try {
             PreparedStatement statement = connection.prepareStatement(addEmployees);
